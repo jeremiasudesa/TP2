@@ -1,4 +1,4 @@
-def get_interaction_language(len: str) -> str:
+def get_interaction_language_from_DB(len: str) -> str:
     f = None
     if (len == "en"):
         f = open("textos/textos_interaccion_en.txt")
@@ -14,14 +14,18 @@ def handle_len_input(len: str) -> str:
     return len
 
 
-def main():
+def get_interaction_language_from_user() -> str:
     #input / validation
     len = input(
         "choose interaction language // elegi lenguaje de interaccion (en, es): ")
     len = handle_len_input(len)
     # get interaction texts
-    itxt = get_interaction_language(len)
-    print(itxt)
+    itxt = get_interaction_language_from_DB(len)
+    return itxt
+
+
+def main():
+    itxt = get_interaction_language_from_user()
 
 
 if __name__ == "__main__":
