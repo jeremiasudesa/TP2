@@ -5,7 +5,7 @@ import back
 def ask_lan_from_user() -> str:
     lan = None
     # pedir lenguaje al usuario hasta que de correcto
-    while (not back.check_lan_input(lan)):
+    while ((lan == None) or (not back.check_lan_input(lan))):
         lan = int(input(
             "choose interaction language // elegi lenguaje de interaccion (en: 1, es: 2): "))
     return lan
@@ -29,11 +29,11 @@ def main():
     # conseguir textos de interaccion
     itxt = back.get_interaction_text_from_DB(len)
     # conseguir diccionario
-    dict = back.get_dict(len)
+    dic = back.get_dict(len)
     # conseguir palabras no limpias
-    words = ask_text_from_user(itxt[0])
+    #words = ask_text_from_user(itxt[0])
     # conseguir indices de palabras no pertenecientes al diccionario
-    words_outside = back.not_in_dict(words, dict)
+    #words_outside = back.not_in_dict(words, dict)
 
 
 if __name__ == "__main__":

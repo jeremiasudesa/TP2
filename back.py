@@ -1,21 +1,38 @@
-def get_raw_text_from_file(path: str) -> str:
-    f = open(path)
+import os.path
+from os import path
+
+
+def path_name_exists(pathstr: str) -> bool:
+    return path.exists(pathstr)
+
+
+def get_raw_text_from_file(pathstr: str) -> str:
+    if (not path_name_exists(pathstr)):
+        return None
+    f = open(pathstr)
     ret = f.read()
     f.close()
     return ret
 
 
-def get_interaction_text_from_DB(len: str) -> tuple:
-    return get_raw_text_from_file("source/textos_interaccion_" + str(len) + ".txt").split("|")
+def get_interaction_text_from_DB(lan: str) -> tuple:
+    grtff = get_raw_text_from_file(
+        "source/textos_interaccion_" + str(lan) + ".txt")
+    if (grtff == None):
+        return None
+    return grtff.split("|")
 
 
-def get_dict(len: str) -> tuple:
-    return get_raw_text_from_file("source/diccionario_" + str(len) + ".txt").split()
+def get_dict(lan: str) -> tuple:
+    grtff = get_raw_text_from_file("source/diccionario_" + str(lan) + ".txt")
+    if (grtff == None):
+        return None
+    return grtff.split("\n")
 
 
-def check_lan_input(lan: str) -> bool:
+def check_lan_input(lan: int) -> bool:
     # TODO check if int, check if easter egg, else wrong
-    return False
+    return (lan == 1 or lan == 2)
 
 
 def get_words_from_raw(raw: str) -> tuple:
