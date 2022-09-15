@@ -23,11 +23,15 @@ def get_interaction_text_from_DB(lan: str) -> tuple:
     return grtff.split("|")
 
 
-def get_dict(lan: str) -> tuple:
+def get_dict(lan: str) -> set:
     grtff = get_raw_text_from_file("source/diccionario_" + str(lan) + ".txt")
     if (grtff == None):
         return None
-    return grtff.split("\n")
+    dic = {}
+    striped = grtff.split("\n")
+    for x in striped:
+        dic.add(x)
+    return x
 
 
 def check_lan_input(lan: int) -> bool:
