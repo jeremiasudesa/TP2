@@ -24,11 +24,11 @@ def ask_text_from_user(input_txt: str) -> tuple:
 
 def main():
     # conseguir lenguaje
-    len = ask_lan_from_user()
+    lan = ask_lan_from_user()
     # conseguir textos de interaccion
-    itxt = back.get_interaction_text_from_DB(len)
+    itxt = back.get_interaction_text_from_DB(lan)
     # conseguir diccionario
-    dictionary = back.get_dict(len)
+    dictionary = back.get_dict(lan)
     # calculate top 3 levi for each word
     # add check with dictionary
     # for each word offer options to user and make him able to change
@@ -37,11 +37,15 @@ def main():
     # conseguir indices de palabras no pertenecientes al diccionario
     words_outside = back.not_in_dict(words, dictionary)
     # caculate top 3 levi distances for each word
-    bktree = text_suggestion.bk_tree(dictionary)
+    bktree = text_suggestion.bk_tree_singleton(dictionary, lan)
     # print(bktree.tree[bktree.root][1])
     ret = []
-    print(bktree.root)
-    print(bktree.retrieve_words(10, bktree.root, "pollerx", ret))
+    print("buscando palabras...")
+    bktree.retrieve_words(2, bktree.root, words[0], ret)
+    if (len(ret) > 0):
+        ret.sort()
+    for x in range(min(5, len(ret))):
+        print(ret[x][1])
 
 
 if __name__ == "__main__":

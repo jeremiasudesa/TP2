@@ -1,17 +1,22 @@
 import functools
 from functools import lru_cache
+import pickle
+import back
 
 
 class bk_tree:
-    def __init__(self, D: set):
+    def __init__(self, D: set, lan: int):
         self.tree = {}
         self.root = ""
         self.Dictionary = D
         self.init_dictionary()
+        # store instance
 
     def init_dictionary(self):
+        print("creando diccionario...")
         for w in self.Dictionary:
             self.insert_word(self.root, w)
+        print("diccionario creado.")
 
     @lru_cache
     def levenshtein_recursive(self, word_a, word_b):
@@ -37,7 +42,7 @@ class bk_tree:
         )
 
     def insert_word(self, curr: str, wrd: str):
-        #print(f"{curr}, {wrd}")
+        # print(f"{curr}, {wrd}")
         if self.root == "":
             self.root = wrd
             self.tree[self.root] = (self.root, {})
@@ -50,18 +55,28 @@ class bk_tree:
         self.tree[curr][1][distance] = self.tree[wrd]
 
     def retrieve_words(self, tol: int, curr: str, wrd: str, ret: list) -> list:
-        print(f"{curr}, {wrd}")
-        min_child = None
-        min_distance = tol+1
-        if (self.levenshtein_recursive(curr, wrd) <= tol):
-            ret.append(curr)
-        for x in self.tree[curr][1].keys():
-            node = self.tree[curr][1][x]
-            curr_child = node[0]
-            curr_distance = self.levenshtein_recursive(curr_child, wrd)
-            if (curr_distance < min_distance):
-                min_child = curr_child
-                min_distance = curr_distance
-        if (min_child != None):
-            return self.retrieve_words(tol, min_child, wrd, ret)
-        return ret
+        D = self.levenshtein_recursive(curr, wrd)
+        if (D <= tol):
+            ret.append((D, curr))
+        rb = D + tol
+        lb = max(1, D - tol)
+        parent = self.tree[curr]
+        for dis in range(lb, rb+1):
+            child = parent[1].get(dis)
+            if (child == None):
+                continue
+            nd = self.levenshtein_recursive(child[0], wrd)
+            self.retrieve_words(tol, child[0], wrd, ret)
+
+
+def bk_tree_singleton(D: set, lan: int):
+    # check if tree already exists
+    if (back.path_name_exists("source/class_" + str(lan)+".obj")):
+        # set class to class
+        filehandler = open("source/class_"+str(lan)+".obj", 'rb')
+        return pickle.load(filehandler)
+    else:
+        bktree = bk_tree(D, lan)
+        file_pi = open("source/class_"+str(lan)+".obj", 'wb')
+        pickle.dump(bktree, file_pi)
+        return bktree
