@@ -10,14 +10,9 @@ def get_text_from_user(way: str) -> str:
             ret = get_raw_text_from_file(path)
     else:
         ret = input("ingresar texto: ")
-    return ""
+    return ret
 
 
 def handle_lan_error(txt: str):
-    # tell the user why the input is wrong
-    return
-
-
-def handle_text_error(txt: str):
     # tell the user why the input is wrong
     return

@@ -1,1 +1,1 @@
-Hola! (Mundo?)
+Ingresar modo de ingreso de texto (1:batch, 2:consola): 
