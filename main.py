@@ -39,13 +39,16 @@ def main():
     # caculate top 3 levi distances for each word
     bktree = text_suggestion.bk_tree_singleton(dictionary, lan)
     # print(bktree.tree[bktree.root][1])
-    ret = []
     print("buscando palabras...")
-    bktree.retrieve_words(2, bktree.root, words[0], ret)
-    if (len(ret) > 0):
-        ret.sort()
-    for x in range(min(5, len(ret))):
-        print(ret[x][1])
+    for wo in words_outside:
+        ret = []
+        bktree.retrieve_words(2, bktree.root, wo, ret)
+        if (len(ret) > 0):
+            ret.sort()
+        print(f"{wo}:")
+        for x in range(min(3, len(ret))):
+            print(ret[x][1])
+        print("////////")
 
 
 if __name__ == "__main__":
