@@ -18,8 +18,29 @@ def ask_text_from_user(input_txt: str) -> tuple:
     # validar way
     raw = front.get_text_from_user(way)
     # conseguir palabras
-    words = back.get_words_from_raw(raw)
-    return words
+    return back.separe(raw)
+
+
+def get_top_5(wrd: str, bktree: text_suggestion.bk_tree) -> list:
+    ret = []
+    bktree.retrieve_words(2, bktree.root, wrd, ret)
+    if (len(ret) > 0):
+        ret.sort()
+    return [x[1] for x in list(ret[:5])]
+
+
+def fix_error(wrd: int, parts: list, bkt: text_suggestion.bk_tree):
+    suggestion_list = get_top_5(parts[wrd], bkt)
+    suggestion_list.append("OOV")
+    print("elegir opcion: ")
+    for i in range(len(suggestion_list)):
+        print(f"[{i+1}]: {suggestion_list[i]}")
+    print("//////////")
+    option = front.get_option(len(suggestion_list))
+    print(option)
+    back.replace_text(option, wrd, parts, suggestion_list)
+    front.display_text(parts)
+    return
 
 
 def main():
@@ -33,22 +54,13 @@ def main():
     # add check with dictionary
     # for each word offer options to user and make him able to change
     # conseguir palabras no limpias
-    words = ask_text_from_user(itxt[0])
+    parts = ask_text_from_user(itxt[0])
     # conseguir indices de palabras no pertenecientes al diccionario
-    words_outside = back.not_in_dict(words, dictionary)
+    words_outside = back.not_in_dict(parts, dictionary)
     # caculate top 3 levi distances for each word
     bktree = text_suggestion.bk_tree_singleton(dictionary, lan)
-    # print(bktree.tree[bktree.root][1])
-    print("buscando palabras...")
     for wo in words_outside:
-        ret = []
-        bktree.retrieve_words(2, bktree.root, wo, ret)
-        if (len(ret) > 0):
-            ret.sort()
-        print(f"{wo}:")
-        for x in range(min(3, len(ret))):
-            print(ret[x][1])
-        print("////////")
+        fix_error(wo, parts, bktree)
 
 
 if __name__ == "__main__":
