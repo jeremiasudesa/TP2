@@ -71,12 +71,13 @@ class bk_tree:
 
 def bk_tree_singleton(D: set, lan: int):
     # check if tree already exists
-    if (back.path_name_exists("source/class_" + str(lan)+".obj")):
+    file_path = back.abspath("source/class_" + str(lan)+".obj")
+    if (back.path_name_exists(file_path)):
         # set class to class
-        filehandler = open("source/class_"+str(lan)+".obj", 'rb')
+        filehandler = open(file_path, 'rb')
         return pickle.load(filehandler)
     else:
         bktree = bk_tree(D, lan)
-        file_pi = open("source/class_"+str(lan)+".obj", 'wb')
+        file_pi = open(file_path, 'wb')
         pickle.dump(bktree, file_pi)
         return bktree

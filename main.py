@@ -1,3 +1,4 @@
+from time import sleep
 import front
 import back
 import text_suggestion
@@ -12,11 +13,11 @@ def ask_lan_from_user() -> str:
     return lan
 
 
-def ask_text_from_user(input_txt: str) -> tuple:
+def ask_text_from_user(input_txt1: str, input_txt2: tuple) -> tuple:
     # conseguir raw
-    way = input(input_txt)
+    way = int(input(input_txt1))
     # validar way
-    raw = front.get_text_from_user(way)
+    raw = front.get_text_from_user(way, input_txt2[way-1])
     # conseguir palabras
     return back.separe(raw)
 
@@ -29,21 +30,25 @@ def get_top_5(wrd: str, bktree: text_suggestion.bk_tree) -> list:
     return [x[1] for x in list(ret[:5])]
 
 
-def fix_error(wrd: int, parts: list, bkt: text_suggestion.bk_tree):
+def fix_error(wrd: int, parts: list, bkt: text_suggestion.bk_tree, interaction_txt1: str, interaction_txt2: str, interaction_txt3: str):
+    front.clear_terminal()
+    front.display_text(wrd, parts, "red")
     suggestion_list = get_top_5(parts[wrd], bkt)
-    suggestion_list.append("OOV")
-    print("elegir opcion: ")
+    print(interaction_txt1)
     for i in range(len(suggestion_list)):
         print(f"[{i+1}]: {suggestion_list[i]}")
+    print(f"[{len(suggestion_list)+1}]: OOV")
     print("//////////")
-    option = front.get_option(len(suggestion_list))
-    print(option)
+    suggestion_list.append(parts[wrd])
+    option = front.get_option(len(suggestion_list), interaction_txt2)
     back.replace_text(option, wrd, parts, suggestion_list)
-    front.display_text(parts)
+    front.display_text(wrd, parts, "green")
+    anykey = input(interaction_txt3)
     return
 
 
 def main():
+    front.clear_terminal()
     # conseguir lenguaje
     lan = ask_lan_from_user()
     # conseguir textos de interaccion
@@ -54,13 +59,18 @@ def main():
     # add check with dictionary
     # for each word offer options to user and make him able to change
     # conseguir palabras no limpias
-    parts = ask_text_from_user(itxt[0])
+    parts = ask_text_from_user(itxt[0], (itxt[1], itxt[2]))
     # conseguir indices de palabras no pertenecientes al diccionario
     words_outside = back.not_in_dict(parts, dictionary)
     # caculate top 3 levi distances for each word
     bktree = text_suggestion.bk_tree_singleton(dictionary, lan)
     for wo in words_outside:
-        fix_error(wo, parts, bktree)
+        fix_error(wo, parts, bktree, itxt[3], itxt[4], itxt[5])
+    front.clear_terminal()
+    ft = ""
+    for x in parts:
+        ft += x
+    front.finalprint(ft, itxt[6])
 
 
 if __name__ == "__main__":

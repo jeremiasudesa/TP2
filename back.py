@@ -1,6 +1,10 @@
-from curses.ascii import isalpha
-import os.path
 from os import path
+
+
+def abspath(relative_path: str) -> str:
+    script_dir = path.dirname(__file__)  # <-- absolute dir the script is in
+    file_path = path.join(script_dir, relative_path)
+    return file_path
 
 
 def path_name_exists(pathstr: str) -> bool:
@@ -8,9 +12,11 @@ def path_name_exists(pathstr: str) -> bool:
 
 
 def get_raw_text_from_file(pathstr: str) -> str:
-    if (not path_name_exists(pathstr)):
+    file_path = abspath(pathstr)
+    if (not path_name_exists(file_path)):
+        print("NO EXISTE")
         return None
-    f = open(pathstr)
+    f = open(file_path)
     ret = f.read()
     f.close()
     return ret
@@ -56,7 +62,7 @@ def not_in_dict(wrds: list, dic: set) -> tuple:
     # posiblemente se podria hacer mejor con una funcion nativa
     ret = []
     for ind in range(len(wrds)):
-        if (not isalpha(wrds[ind][0])):
+        if (not (wrds[ind][0].isalpha())):
             continue
         if not (wrds[ind] in dic):
             ret.append(ind)

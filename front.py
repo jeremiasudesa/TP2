@@ -1,14 +1,17 @@
+from turtle import clear
 import back
+import os
+from termcolor import colored
 
 
-def get_text_from_user(way: str) -> str:
+def get_text_from_user(way: str, input_txt) -> str:
     ret = None
     if (way == 1):
         while (ret == None):
-            path = input("ingresar path del archivo: ")
+            path = input(input_txt)
             ret = back.get_raw_text_from_file(path)
     else:
-        ret = input("ingresar texto: ")
+        ret = input(input_txt)
     return ret
 
 
@@ -17,16 +20,27 @@ def handle_lan_error(txt: str):
     return
 
 
-def get_option(cantop: int) -> str:
+def get_option(cantop: int, input_txt) -> str:
     ret = False
     while (not ret):
-        opt = int(input("ingresar opcion: "))
+        opt = int(input(input_txt))
         ret = back.check_opt_input(opt, cantop)
     return opt
 
 
-def display_text(parts: list):
-    fulltxt = ""
-    for x in parts:
-        fulltxt += x
-    print(fulltxt)
+def display_text(idx: int, parts: list, color: str):
+    for x in range(idx):
+        print(parts[x], end="")
+    print(colored(parts[idx], color), end="")
+    for x in range(idx+1, len(parts)):
+        print(parts[x], end=""),
+    print("")
+
+
+def finalprint(mssg: str, interaction_txt: str):
+    print(interaction_txt)
+    print(colored(mssg, "green"))
+
+
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')
