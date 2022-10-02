@@ -48,8 +48,9 @@ def fix_error(wrd: int, parts: list, bkt: text_suggestion.bk_tree, interaction_t
 
 
 def third_language(lan: str):
-    front.easter_egg()
-    exit()
+    if (lan == 3):
+        front.easter_egg()
+        exit()
 
 
 def main():
