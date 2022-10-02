@@ -51,6 +51,9 @@ def main():
     front.clear_terminal()
     # conseguir lenguaje
     lan = ask_lan_from_user()
+    if (lan == 3):
+        front.easter_egg()
+        exit()
     # conseguir textos de interaccion
     itxt = back.get_interaction_text_from_DB(lan)
     # conseguir diccionario

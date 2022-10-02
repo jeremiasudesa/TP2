@@ -43,7 +43,7 @@ def get_dict(lan: str) -> set:
 
 def check_lan_input(lan: int) -> bool:
     # TODO check if int, check if easter egg, else wrong
-    return (lan in range(1, 3))
+    return (lan in range(1, 4))
 
 
 def check_opt_input(opt: int, lenop) -> bool:
