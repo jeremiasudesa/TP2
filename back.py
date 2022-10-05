@@ -1,89 +1,161 @@
+#Imports
 from os import path
-
-
+#Absolut path
 def abspath(relative_path: str) -> str:
-    script_dir = path.dirname(__file__)  # <-- absolute dir the script is in
+    """
+    Create a absolt path with a relative path
+    
+    Arguments
+    relative_path -- Relative path
+    """
+    script_dir = path.dirname(__file__)
     file_path = path.join(script_dir, relative_path)
     return file_path
 
+#Check if path exist
+def path_name_exists(path_name: str) -> bool:
+    """
+    Check if path exist
 
-def path_name_exists(pathstr: str) -> bool:
-    return path.exists(pathstr)
+    Arguments
+    path_name -- Path to check
+    """
+    return path.exists(path_name)
 
+#Get raw text from file
+def get_raw_text_from_file(path_name: str) -> str:
+    """
+    Get the raw text from a given file
 
-def get_raw_text_from_file(pathstr: str) -> str:
-    # TODO: abrir con with
-    # TODO: correjir en el archivo mismo
-    # commit thissss
-    file_path = abspath(pathstr)
+    Arguments
+    path_name -- Path to access the file
+    """
+    file_path = abspath(path_name)
     if (not path_name_exists(file_path)):
-        print("NO EXISTE")
+        print("NO EXISTE") #TODO = Agregar system text
         return None
     f = open(file_path)
     ret = f.read()
     f.close()
     return ret
 
+#Get system texts
+def get_system_texts(language: str) -> tuple:
+    """
+    For a given language gets system texts
 
-def get_interaction_text_from_DB(lan: str) -> tuple:
-    grtff = get_raw_text_from_file(
-        "source/textos_interaccion_" + str(lan) + ".txt")
-    if (grtff == None):
+    Arguments
+    language -- Language specified from user
+    """
+    raw_text = get_raw_text_from_file(
+        "source/textos_interaccion_" + str(language) + ".txt")
+    if (raw_text == None):
         return None
-    return grtff.split("|")
+    return raw_text.split("|")
 
+#Get dictionary for the selected language
+def get_dict(language: str) -> set:
+    """
+    For a given language gets dictionary
 
-def get_dict(lan: str) -> set:
-    grtff = get_raw_text_from_file("source/diccionario_" + str(lan) + ".txt")
-    if (grtff == None):
+    Arguments
+    language -- Language specified from user
+    """
+    raw_text = get_raw_text_from_file("source/diccionario_" + str(language) + ".txt")
+    if (raw_text == None):
         return None
     dic = set()
-    striped = grtff.split("\n")
+    striped = raw_text.split("\n")
     for x in striped:
         dic.add(x)
     return dic
 
+#Checks language input
+def check_lan_input(language: int) -> bool:
+    """
+    Checks if language option is valid.
 
-def check_lan_input(lan: int) -> bool:
+    Arguments 
+    language -- Language selected
+    """
     # TODO check if int, check if easter egg, else wrong
-    return (lan in range(1, 4))
+    return (language in range(1, 4))
 
-
+#Check input option
 def check_opt_input(opt: int, lenop) -> bool:
+    """
+    Checks if option is valid.
+
+    Arguments 
+    option -- option selected
+    """
     return (opt in range(1, lenop+1))
 
+#Get splited words from text
+def get_words_from_raw(raw_text: str) -> tuple:
+    """
+    Get splited tuple of words
 
-def get_words_from_raw(raw: str) -> tuple:
-    return raw.split()
+    Arguments
+    raw_text -- Raw text to get words
+    """
+    return raw_text.split() #TODO mirame esto jere, fijate las lista reynolds
 
-
+#Clean words
 def clean_word(word: str) -> str:
+    """
+    Get only words from a given string.
+
+    Arguments
+    word -- String to clean
+    """
     return str([x for x in word if (x in range('a', 'z'))])
 
+#Words not in dict
+def not_in_dict(words_list: list, dictionary: set) -> tuple:
+    """
+    Get words not in dictionary
 
-def not_in_dict(wrds: list, dic: set) -> tuple:
-    # posiblemente se podria hacer mejor con una funcion nativa
+    Arguments
+    words_list -- List of words to check
+    dictionary -- Dictionary to check words
+    """
     ret = []
-    for ind in range(len(wrds)):
-        if (not (wrds[ind][0].isalpha())):
+    for ind in range(len(words_list)):
+        if (not (words_list[ind][0].isalpha())):
             continue
-        if not (wrds[ind] in dic):
+        if not (words_list[ind] in dictionary):
             ret.append(ind)
     return ret
 
+#Separe words from characters
+def separe(text: str) -> list:
+    """
+    Separe text from characters
 
-def separe(w: str) -> list:
+    Arguments
+    text -- String of text to check
+    """
     ret = []
     idx = 0
-    b = w[0].isalpha()
-    for i in range(len(w)):
-        if (b != (w[i].isalpha()) or w[i] == " "):
-            ret.append(w[idx:i])
+    b = text[0].isalpha()
+    for i in range(len(text)):
+        if (b != (text[i].isalpha()) or text[i] == " "):
+            ret.append(text[idx:i])
             idx = i
-        b = w[i].isalpha()
-    ret.append(w[idx:])
+        b = text[i].isalpha()
+    ret.append(text[idx:])
     return ret
 
+#Replace text
+def replace_text(option_number: int, index: int, words_list: list, suggestion_list: list) -> None:
+    """
+    Replace text inside list of words
 
-def replace_text(option: int, idx: int, parts: list, suggestion_list: list) -> None:
-    parts[idx] = suggestion_list[option-1]
+    Arguments
+    option_number -- Number of selected option
+    index -- Index of the word to change
+    words_list -- List of words
+    suggestion_list -- List of word suggestion    
+    """
+    words_list[index] = suggestion_list[option_number-1]
