@@ -12,6 +12,8 @@ def path_name_exists(pathstr: str) -> bool:
 
 
 def get_raw_text_from_file(pathstr: str) -> str:
+    # TODO: abrir con with
+    # TODO: correjir en el archivo mismo
     file_path = abspath(pathstr)
     if (not path_name_exists(file_path)):
         print("NO EXISTE")
