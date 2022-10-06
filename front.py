@@ -1,8 +1,10 @@
-#Imports
+# Imports
 import back
 import os
 from termcolor import colored
-#Get text from user, depending on mode
+# Get text from user, depending on mode
+
+
 def get_text_from_user(mode: str, system_text: str) -> str:
     """
     Show message asking text input mode, and gets the text.
@@ -33,7 +35,19 @@ def handle_lan_error(value: str):
     return
 
 
-def get_option(qty_opt: int, system_text) -> str:
+def simple_int_input(system_txt) -> int:
+    return int(input(system_txt))
+
+
+def get_lan(system_txt: str) -> int:
+    return simple_int_input(system_txt)
+
+
+def get_mode(system_txt: str) -> int:
+    return simple_int_input(system_txt)
+
+
+def get_option(qty_opt: int, system_text: str) -> int:
     """
     Gets the user option 
 
@@ -43,11 +57,13 @@ def get_option(qty_opt: int, system_text) -> str:
     """
     ret = False
     while (not ret):
-        opt = int(input(system_text))
+        opt = simple_int_input(system_text)
         ret = back.check_opt_input(opt, qty_opt)
     return opt
 
-#Display text
+# Display text
+
+
 def display_text(index: int, sliced_words: list, color: str):
     """
     Show text with highlighted word.
@@ -64,7 +80,9 @@ def display_text(index: int, sliced_words: list, color: str):
         print(sliced_words[x], end=""),
     print("")
 
-#Final print message
+# Final print message
+
+
 def finalprint(message: str, system_text: str):
     """
     Shows the resulting text.
@@ -76,7 +94,9 @@ def finalprint(message: str, system_text: str):
     print(system_text)
     print(colored(message, "green"))
 
-#Clear terminal
+# Clear terminal
+
+
 def clear_terminal():
     """
     Clear the terminal
