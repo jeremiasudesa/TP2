@@ -1,7 +1,4 @@
 # Imports
-from code import interact
-from os import system
-from time import sleep
 import front
 import back
 import text_suggestion
@@ -129,12 +126,12 @@ def main():
     # Fix error in words
     for word_outside in words_outside:
         fix_error(word_outside, parts, bktree, interaction_text[3:6])
+    # Show final text
     front.clear_terminal()
-    ft = ""
-    for x in parts:
-        ft += x
+    ft = back.final_text(parts)
     front.finalprint(ft, interaction_text[6])
-    back.writefile(input(interaction_text[7]), ft)
+    if (mode == 1):
+        back.writefile(input(interaction_text[7])+".txt", ft)
 
 
 if __name__ == "__main__":

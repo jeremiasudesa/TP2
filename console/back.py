@@ -196,3 +196,10 @@ def writefile(path: str, content: str):
     path = abspath(path)
     with open(path, 'w') as f:
         f.write(content)
+
+
+def final_text(parts: tuple) -> str:
+    """
+    joins string segments
+    """
+    return "".join(parts)
