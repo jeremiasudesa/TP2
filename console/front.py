@@ -35,31 +35,52 @@ def handle_lan_error(value: str):
     return
 
 
-def simple_int_input(system_txt) -> int:
-    return int(input(system_txt))
+def simple_input(system_txt) -> int:
+    return input(system_txt)
 
 
 def get_lan(system_txt: str) -> int:
-    return simple_int_input(system_txt)
+    """
+    Gets the system language
+
+    Arguments
+    system_text -- System text for input
+    """
+    return simple_input(system_txt)
 
 
 def get_mode(system_txt: str) -> int:
-    return simple_int_input(system_txt)
+    """
+    Gets the input mode 
+
+    Arguments
+    system_text -- System text for input
+    """
+    return simple_input(system_txt)
 
 
-def get_option(qty_opt: int, system_text: str) -> int:
+def display_options(suggestion_list: tuple):
+    """
+    Shows options to user
+
+    Arguments
+    suggestion_list: tuple of suggestions
+    """
+    for i in range(len(suggestion_list)-1):
+        print(f"[{i+1}]: {suggestion_list[i]}")
+    print(f"[{len(suggestion_list)}]: OOV")
+    print("")  # print an empty line
+
+
+def get_option(system_text: str) -> int:
     """
     Gets the user option 
 
     Arguments
-    qty_opt -- Number of options
     system_text -- System text for input
     """
-    ret = False
-    while (not ret):
-        opt = simple_int_input(system_text)
-        ret = back.check_opt_input(opt, qty_opt)
-    return opt
+    # Get option
+    return simple_input(system_text)
 
 # Display text
 
@@ -73,6 +94,7 @@ def display_text(index: int, sliced_words: list, color: str):
     sliced_words -- Text with words sliced
     color -- Color to use
     """
+    clear_terminal()
     for x in range(index):
         print(sliced_words[x], end="")
     print(colored(sliced_words[index], color), end="")

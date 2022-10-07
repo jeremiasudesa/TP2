@@ -1,6 +1,4 @@
-# Imports
 from os import path
-# Absolut path
 
 
 def abspath(relative_path: str) -> str:
@@ -15,9 +13,6 @@ def abspath(relative_path: str) -> str:
     return file_path
 
 
-# Check if path exist
-
-
 def path_name_exists(path_name: str) -> bool:
     """
     Check if path exist
@@ -26,8 +21,6 @@ def path_name_exists(path_name: str) -> bool:
     path_name -- Path to check
     """
     return path.exists(path_name)
-
-# Get raw text from file
 
 
 def get_raw_text_from_file(path_name: str) -> str:
@@ -45,8 +38,6 @@ def get_raw_text_from_file(path_name: str) -> str:
     f.close()
     return ret
 
-# Get system texts
-
 
 def get_system_texts(language: str) -> tuple:
     """
@@ -58,8 +49,6 @@ def get_system_texts(language: str) -> tuple:
     path = "source/textos_interaccion_" + str(language) + ".txt"
     raw_text = get_raw_text_from_file(path)
     return raw_text.split("|")
-
-# Get wordset for the selected language
 
 
 def get_wordset(language: str) -> set:
@@ -79,31 +68,59 @@ def get_wordset(language: str) -> set:
         dic.add(x)
     return dic
 
-# Checks language input
+
+def try_positive_int(param: str) -> int:
+    """
+    Tries casting string to int, otherwise returns a negative number.
+
+    Arguments
+    param -- any string
+    """
+    try:
+        return int(param)
+    except:
+        return -1
 
 
-def check_lan_input(language: int) -> bool:
+def check(x: str, maxi: int) -> bool:
+    """
+    Try casting string to int, check if inside range.
+
+    Arguments 
+    x -- String to be checked
+    """
+    x = try_positive_int(x)
+    return x in range(1, maxi)
+
+
+def check_lan_input(language: str) -> bool:
     """
     Checks if language option is valid.
 
     Arguments 
     language -- Language selected
     """
-    return (language in range(1, 4))
-
-# Check input option
+    return check(language, 4)
 
 
-def check_opt_input(opt: int, lenop) -> bool:
+def check_mode_input(mode: str) -> bool:
+    """
+    Checks if mode option is valid.
+
+    Arguments 
+    mode -- Mode selected
+    """
+    return check(mode, 3)
+
+
+def check_opt_input(opt: str, len_sug: int) -> bool:
     """
     Checks if option is valid.
 
     Arguments 
     option -- option selected
     """
-    return (opt in range(1, lenop+1))
-
-# Get splited words from text
+    return check(opt, len_sug+1)
 
 
 def get_words_from_raw(raw_text: str) -> list:
@@ -115,8 +132,6 @@ def get_words_from_raw(raw_text: str) -> list:
     """
     return raw_text.split()
 
-# Clean words
-
 
 def clean_word(word: str) -> str:
     """
@@ -126,8 +141,6 @@ def clean_word(word: str) -> str:
     word -- String to clean
     """
     return str([x for x in word if (x in range('a', 'z'))])
-
-#Words not in wordset
 
 
 def not_in_wordset(words_list: list, wordset: set) -> tuple:
@@ -145,8 +158,6 @@ def not_in_wordset(words_list: list, wordset: set) -> tuple:
         if not (words_list[ind] in wordset):
             ret.append(ind)
     return ret
-
-# Separe words from characters
 
 
 def separe(text: str) -> list:
@@ -166,8 +177,6 @@ def separe(text: str) -> list:
         b = text[i].isalpha()
     ret.append(text[idx:])
     return ret
-
-# Replace text
 
 
 def replace_text(option_number: int, index: int, words_list: list, suggestion_list: list) -> None:

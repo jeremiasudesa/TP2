@@ -1,1 +1,0 @@
-Choose input format (1:batch, 2:console): |Insert path: |Insert text: |options: |Choose option: |Press enter|Final text: |Enter path of result: 
