@@ -1,4 +1,5 @@
 from os import path
+import typing
 
 
 def abspath(relative_path: str) -> str:
@@ -23,9 +24,20 @@ def path_name_exists(path_name: str) -> bool:
     return path.exists(path_name)
 
 
-def get_raw_text_from_file(path_name: str) -> str:
+def check_file_type(path_name: str, desired_types: tuple) -> bool:
     """
-    Get the raw text from a given file
+    Return true if correct file type
+
+    Arguments
+    path_name -- Path to access the file
+    desired_types -- Valid file
+    """
+    return path_name.lower().endswith(desired_types)
+
+
+def get_raw_text_from_file(path_name: str) -> typing.Union[str, None]:
+    """
+    Get the raw text from a given file if file is as desired
 
     Arguments
     path_name -- Path to access the file
@@ -33,13 +45,16 @@ def get_raw_text_from_file(path_name: str) -> str:
     file_path = abspath(path_name)  # get absolute path
     if (not path_name_exists(file_path)):  # wait until path exists
         return None
-    f = open(file_path)
+    extensions = tuple(".txt")
+    if (not check_file_type(file_path, extensions)):
+        return None
+    f = open(file_path,  encoding='utf-8')
     ret = f.read()
     f.close()
     return ret
 
 
-def get_system_texts(language: str) -> tuple:
+def get_system_texts(language: int) -> tuple:
     """
     For a given language gets system texts
 
@@ -48,10 +63,12 @@ def get_system_texts(language: str) -> tuple:
     """
     path = "source/textos_interaccion_" + str(language) + ".txt"
     raw_text = get_raw_text_from_file(path)
-    return raw_text.split("|")
+    if (raw_text == None):
+        raise Exception("Internal Error: System Text Retrieval Fail")
+    return tuple(raw_text.split("|"))
 
 
-def get_wordset(language: str) -> set:
+def get_wordset(language: int) -> typing.Union[set, None]:
     """
     For a given language gets wordset
 
@@ -86,18 +103,18 @@ def check(x: str, maxi: int) -> bool:
     """
     Try casting string to int, check if inside range.
 
-    Arguments 
+    Arguments
     x -- String to be checked
     """
-    x = try_positive_int(x)
-    return x in range(1, maxi)
+    x_int = try_positive_int(x)
+    return x_int in range(1, maxi)
 
 
 def check_lan_input(language: str) -> bool:
     """
     Checks if language option is valid.
 
-    Arguments 
+    Arguments
     language -- Language selected
     """
     return check(language, 4)
@@ -107,7 +124,7 @@ def check_mode_input(mode: str) -> bool:
     """
     Checks if mode option is valid.
 
-    Arguments 
+    Arguments
     mode -- Mode selected
     """
     return check(mode, 3)
@@ -117,7 +134,7 @@ def check_opt_input(opt: str, len_sug: int) -> bool:
     """
     Checks if option is valid.
 
-    Arguments 
+    Arguments
     option -- option selected
     """
     return check(opt, len_sug+1)
@@ -149,7 +166,7 @@ def not_in_wordset(words_list: list, wordset: set) -> tuple:
 
     Arguments
     words_list -- List of words to check
-    wordset -- Wordset 
+    wordset -- Wordset
     """
     ret = []
     for ind in range(len(words_list)):
@@ -157,7 +174,7 @@ def not_in_wordset(words_list: list, wordset: set) -> tuple:
             continue
         if not (words_list[ind] in wordset):
             ret.append(ind)
-    return ret
+    return tuple(ret)
 
 
 def separe(text: str) -> list:
@@ -187,18 +204,25 @@ def replace_text(option_number: int, index: int, words_list: list, suggestion_li
     option_number -- Number of selected option
     index -- Index of the word to change
     words_list -- List of words
-    suggestion_list -- List of word suggestion    
+    suggestion_list -- List of word suggestion
     """
-    words_list[index] = suggestion_list[option_number-1]
+    words_list[index] = suggestion_list[option_number]
 
 
 def writefile(path: str, content: str):
+    """
+    Creates file
+
+    Arguments
+    path -- pathname
+    content -- file content
+    """
     path = abspath(path)
-    with open(path, 'w') as f:
+    with open(path, 'w', encoding='utf-8') as f:
         f.write(content)
 
 
-def final_text(parts: tuple) -> str:
+def final_text(parts: list) -> str:
     """
     joins string segments
     """

@@ -1,1 +1,1 @@
-Choose input format (1:batch, 2:console): |Insert path: |Insert text: |options: |Choose option: |Press enter|Final text: |Path of result (.txt): 
+Choose input format (1:batch, 2:console): |Insert path (.txt): |Insert text: |options: |Choose option: |Press enter|Final text: |Path of result (.txt): 

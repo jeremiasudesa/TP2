@@ -1,1 +1,1 @@
-Ingresar modo de ingreso de texto (1:batch, 2:consola): |Igresar direccion del archivo: |Ingresar texto: |opciones: |Elegir opcion: |Tocar enter|Texto final: |Direccion de archivo con resultados (.txt): 
+Ingresar modo de ingreso de texto (1:batch, 2:consola): |Igresar direccion del archivo (.txt): |Ingresar texto: |opciones: |Elegir opcion: |Tocar enter|Texto final: |Direccion de archivo con resultados (.txt): 
