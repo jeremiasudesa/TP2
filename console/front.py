@@ -47,7 +47,7 @@ def get_mode(system_txt: str) -> str:
     return simple_input(system_txt)
 
 
-def display_options(suggestion_list: tuple):
+def display_options(suggestion_list: list):
     """
     Shows options to user
 

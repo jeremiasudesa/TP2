@@ -56,7 +56,7 @@ def get_option_from_user(len_sug: int, system_text: str) -> int:
     return int(opt)
 
 
-def get_top_5(word: str, bktree: text_suggestion.bk_tree) -> tuple:
+def get_top_5(word: str, bktree: text_suggestion.bk_tree) -> list:
     """
     Get top five words for a given string using Levenshtein distance.
 
@@ -69,7 +69,7 @@ def get_top_5(word: str, bktree: text_suggestion.bk_tree) -> tuple:
     bktree.retrieve_words(2, bktree.root, word, ret)
     if (len(ret) > 0):
         ret.sort()
-    return tuple([x[1] for x in list(ret[:5])])
+    return [x[1] for x in list(ret[:5])]
 
 
 def fix_error(word_index: int, sliced_words: list, bk_tree: text_suggestion.bk_tree, system_texts: tuple):
@@ -86,7 +86,7 @@ def fix_error(word_index: int, sliced_words: list, bk_tree: text_suggestion.bk_t
     front.display_text(word_index, sliced_words, "red")
     # Get options
     suggestion_list = get_top_5(sliced_words[word_index], bk_tree)
-    suggestion_list += sliced_words[word_index]
+    suggestion_list.append(sliced_words[word_index])
     # Display options
     front.display_options(suggestion_list)
     # When user selects option perform editing
